@@ -9,7 +9,8 @@ USER_ID=$(curl -s http://metadata.google.internal/computeMetadata/v1/instance/at
 IMAGE_ID=$(curl -s http://metadata.google.internal/computeMetadata/v1/instance/attributes/IMAGE_ID -H "Metadata-Flavor: Google")
 
 # Run job
-python3 /home/trellis/jobrunner.py "$USER_ID" "$IMAGE_ID"
+python3 TRELLIS/jobrunner.py "$USER_ID" "$IMAGE_ID"
 
 # Shutdown the VM after completion
+
 sudo shutdown -h now
