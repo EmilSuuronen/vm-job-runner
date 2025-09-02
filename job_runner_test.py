@@ -35,7 +35,7 @@ s3.download_file(BUCKET_NAME, input_key, input_path)
 
 print("Running TRELLIS...")
 img = Image.open(input_path)
-pipeline = TrellisImageTo3DPipeline.from_pretrained("microsoft/TRELLIS-image-large")
+pipeline = TrellisImageTo3DPipeline.from_pretrained("microsoft/TRELLIS-image-base")
 pipeline.cuda()
 output = pipeline.run(img, seed=1)
 
@@ -53,4 +53,5 @@ print("Uploading .glb to S3...")
 s3.upload_file(output_path, BUCKET_NAME, output_key)
 
 print("Job complete.")
+
 
