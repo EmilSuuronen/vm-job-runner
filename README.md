@@ -21,3 +21,11 @@ cd TRELLIS
 ```console
 # pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.3/flash_attn-2.7.3+cu11torch2.4cxx11abiFALSE-cp310-cp310-linux_x86_64.whl --no-build-isolation
 ```
+
+```console (from root)
+cp TRELLIS/vm-job-runner/job_runner.py TRELLIS/vm-job-runner/job_runner_test.py TRELLIS/vm-job-runner/startup.sh TRELLIS/
+```
+
+´´´console
+pip install boto3
+```
