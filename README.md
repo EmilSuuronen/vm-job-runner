@@ -1,6 +1,6 @@
 ### for CUDA 11.8, Python 3.10
 
-#### Install Updates
+#### Install Updates + Ninja
 ```console
 sudo apt update 
 sudo apt install -y git wget curl zip unzip tmux htop build-essential ninja-build
