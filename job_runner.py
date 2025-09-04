@@ -6,6 +6,9 @@ from PIL import Image
 from trellis.pipelines import TrellisImageTo3DPipeline
 from trellis.utils import postprocessing_utils
 
+os.environ["TORCH_CUDA_ARCH_LIST"] = "8.9"
+os.environ['SPCONV_ALGO'] = 'native'
+
 # --- Configuration ---
 AWS_ACCESS_KEY = ""
 AWS_SECRET_KEY = ""
@@ -43,7 +46,18 @@ try:
 
     print("Running generation...")
     image = Image.open(input_path)
-    result = pipeline.run(image, seed=1)
+    result = pipeline.run(
+        image,
+        seed=1,
+        sparse_structure_sampler_params={
+        "steps": 12,
+        "cfg_strength": 7,
+        },
+        slat_sampler_params={
+        "steps": 12,
+        "cfg_strength": 3
+        }
+    )
 
     print("Exporting .glb...")
     glb = postprocessing_utils.to_glb(
@@ -62,4 +76,5 @@ try:
 except Exception as e:
     print("Job failed:")
     traceback.print_exc()
+
     sys.exit(1)
