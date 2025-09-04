@@ -4,6 +4,9 @@ from PIL import Image
 from trellis.pipelines import TrellisImageTo3DPipeline
 from trellis.utils import postprocessing_utils
 
+os.environ["TORCH_CUDA_ARCH_LIST"] = "8.9"
+os.environ['SPCONV_ALGO'] = 'native'
+
 # AWS credentials (IAM user with S3 read/write access)
 AWS_ACCESS_KEY = ""
 AWS_SECRET_KEY = ""
@@ -37,7 +40,18 @@ print("Running TRELLIS...")
 img = Image.open(input_path)
 pipeline = TrellisImageTo3DPipeline.from_pretrained("microsoft/TRELLIS-image-base")
 pipeline.cuda()
-output = pipeline.run(img, seed=1)
+output = pipeline.run(
+    img,
+    seed=1,
+    sparse_structure_sampler_params={
+    "steps": 12,
+    "cfg_strength": 7,
+    },
+    slat_sampler_params={
+    "steps": 12,
+    "cfg_strength": 3
+    }
+)
 
 print("Generating .glb file...")
 glb = postprocessing_utils.to_glb(
@@ -53,5 +67,6 @@ print("Uploading .glb to S3...")
 s3.upload_file(output_path, BUCKET_NAME, output_key)
 
 print("Job complete.")
+
 
 
